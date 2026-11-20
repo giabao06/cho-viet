@@ -26,22 +26,7 @@ Mình suy nghĩ 3 ngày (thật ra là agent suy nghĩ, mình ngủ). Cách tố
 
 ## Kiến trúc hệ thống
 
-```mermaid
-flowchart TD
-  U["👤 User<br/>(tối đa 3 người cùng lúc)"] --> CF["Cloudflare<br/>(gói free)"]
-  CF --> GW["API Gateway<br/>(1 cái if-else 2.400 dòng)"]
-  GW --> O[order-service]
-  GW --> V[voucher-service]
-  GW --> F[flash-sale-service]
-  GW --> X["10 service khác<br/>(chưa ai biết để làm gì)"]
-  GW --> P[payment-service]
-  O --> DB[("Google Sheets<br/>DB_CHUAN_FINAL_v4")]
-  V --> DB
-  F --> DB
-  X --> DB
-  P --> Z["📱 Zalo của mình"]
-  DB --> BK[("Backup: Google Drive")]
-```
+![Kiến trúc hệ thống Chợ Việt](docs/kien-truc.png)
 
 | Thành phần | Công nghệ |
 |---|---|
