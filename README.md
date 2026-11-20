@@ -1,79 +1,116 @@
-# 🛍 Chợ Việt
+# Chợ Việt
 
-Sàn thương mại điện tử vibe code bởi 6 AI agent. Giống Shopee nhưng ít bug hơn (theo PM-agent).
+🌐 **Tiếng Việt** · [English](README.en.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Deutsch](README.de.md)
 
-![build](https://img.shields.io/badge/build-passing%20%28localhost%29-brightgreen) ![uptime](https://img.shields.io/badge/uptime-99.99%25%20tr%C3%AAn%20localhost-brightgreen) ![database](https://img.shields.io/badge/database-Google%20Sheets-34A853) ![user thật](https://img.shields.io/badge/user%20th%E1%BA%ADt-4-orange) ![code review](https://img.shields.io/badge/code%20review-kh%C3%B4ng%20ai-red) ![dòng code mình đọc](https://img.shields.io/badge/d%C3%B2ng%20code%20m%C3%ACnh%20%C4%91%E1%BB%8Dc-0-lightgrey)
+Nền tảng thương mại điện tử thế hệ mới, được phát triển hoàn toàn bởi hệ thống đa tác tử AI (multi-agent).
 
-## Vì sao open source?
+![build](https://img.shields.io/badge/build-passing%20%28localhost%29-brightgreen) ![uptime](https://img.shields.io/badge/uptime-99.99%25%20%28localhost%29-brightgreen) ![database](https://img.shields.io/badge/database-Google%20Sheets-34A853) ![code review](https://img.shields.io/badge/code%20review-0%25-red) ![license](https://img.shields.io/badge/license-MIT-blue)
 
-Sau bài giới thiệu Chợ Việt, anh em vào chửi quá trời: "code AI viết chắc lỗi đầy", "database đâu", "chắc gì có thật".
+## Tổng quan
 
-Mình suy nghĩ 3 ngày (thật ra là agent suy nghĩ, mình ngủ). Cách tốt nhất để hết bị chửi là cho mọi người xem code. Xem rồi sẽ hiểu.
+Chợ Việt là sàn thương mại điện tử được xây dựng trong 14 ngày bởi 6 AI agent, với tổng chi phí 523,41 USD. Dự án hướng tới quy mô tương đương các sàn thương mại điện tử hàng đầu khu vực, với tỷ lệ lỗi thấp hơn (theo đánh giá nội bộ của PM-agent).
 
-Đây cũng là lần đầu mình dùng git. Trước giờ code lưu trên Google Drive.
+Ngày 20/11/2026, sau khi tiếp nhận nhiều phản hồi từ cộng đồng về chất lượng mã nguồn, đội ngũ dự án quyết định công khai toàn bộ mã nguồn nhằm đảm bảo tính minh bạch.
 
-## Số liệu
+## Chỉ số chính
 
-| | |
+| Chỉ số | Giá trị |
 |---|---|
-| Microservice | 14 |
-| Dòng code | 184.920 |
-| Dòng mình đọc được | 0 |
-| User đồng thời (load test) | 2.000.000 (trên 3 tab Chrome) |
-| User đồng thời (thật) | 4 (mẹ mình, 2 bạn, Googlebot) |
-| Tiền token | $523,41 (chưa tính tiền điện) |
-| Vốn cần gọi | $2.000.000 (đã gọi được: 0đ) |
+| Số microservice | 14 |
+| Tổng số dòng mã | 184.920 |
+| Số dòng mã đã được con người đọc | 0 |
+| Người dùng đồng thời (load test) | 2.000.000¹ |
+| Người dùng đồng thời (production, đỉnh) | 4² |
+| Chi phí phát triển | 523,41 USD³ |
+| Vốn cần huy động | 2.000.000 USD |
+| Vốn đã huy động | 0 ₫ |
+
+¹ Mô phỏng trên 3 tab Google Chrome.
+² Bao gồm Googlebot.
+³ Chưa bao gồm chi phí điện.
 
 ## Kiến trúc hệ thống
 
 ![Kiến trúc hệ thống Chợ Việt](docs/kien-truc.png)
 
-| Thành phần | Công nghệ |
+| Thành phần | Công nghệ | Ghi chú |
+|---|---|---|
+| Cơ sở dữ liệu | Google Sheets | Mỗi service sở hữu một sheet riêng (database-per-service) |
+| Đánh chỉ mục | Ctrl+F | |
+| Giao dịch | Quy ước vận hành | Không chỉnh sửa đồng thời cùng một ô |
+| Hàng đợi thông điệp | Google Forms | Xử lý theo lô, 1 lần/ngày (buổi sáng) |
+| Bộ nhớ đệm | Tab Chrome thứ 3 | Yêu cầu duy trì trạng thái mở 24/7 |
+| Thanh toán | Chuyển khoản ngân hàng | Xác nhận thủ công qua Zalo bởi founder |
+| Giám sát | Thân nhân của founder | Cảnh báo qua cuộc gọi điện thoại |
+| CI/CD | Agent push trực tiếp lên `main` | Không qua review |
+| Sao lưu | Google Drive | |
+| Mở rộng | Sharding theo tệp | Tạo `DB_CHUAN_FINAL_v{n+1}` khi đạt giới hạn 10 triệu ô |
+
+## Quyết định thiết kế
+
+### ADR-001: Sử dụng Google Sheets làm cơ sở dữ liệu chính
+
+**Bối cảnh.** Phiên bản v3 sử dụng tệp Excel `DB_CHUAN_FINAL_v3_(1).xlsx`. Ngày 18/11, hệ thống ngừng hoạt động toàn bộ do tệp bị khoá khi có từ 4 người dùng truy cập đồng thời (xem [postmortem](docs/postmortem-2026-11-18.md)).
+
+**Các phương án đã cân nhắc.**
+
+| Phương án | Kết luận |
 |---|---|
-| Database | Google Sheets. Mỗi microservice 1 tab |
-| Index | Ctrl+F |
-| Transaction | 2 người đừng sửa cùng 1 ô |
-| Message queue | Google Form. Kết quả đổ về Sheet, sáng mình xử lý |
-| Cache | Tab Chrome thứ 3. Không được tắt |
-| Thanh toán | Chuyển khoản rồi nhắn Zalo mình. Service duy nhất chưa sập lần nào, vì nó là mình |
-| Monitoring | Mẹ mình gọi điện hỏi "sao con vào web không được" |
-| CI/CD | Agent push thẳng lên `main`, không ai review |
-| Scaling | Hết 10 triệu ô thì tạo `DB_CHUAN_FINAL_v5` |
+| PostgreSQL | Loại. Yêu cầu học SQL |
+| Excel | Loại. Sự cố ngày 18/11 |
+| Google Sheets | Chọn |
+
+**Hệ quả.** Hỗ trợ nhiều người dùng chỉnh sửa đồng thời. Giới hạn 10 triệu ô mỗi tệp.
+
+### ADR-002: Loại bỏ quy trình code review
+
+**Bối cảnh.** Quy trình code review liên tục phát hiện lỗi, gây chậm tiến độ phát hành.
+
+**Quyết định.** Loại bỏ code review, tham khảo mô hình vận hành tại SpaceXAI.
+
+**Hệ quả.** Số lỗi được phát hiện giảm 100%.
+
+## Hiệu năng
+
+| Môi trường | Người dùng đồng thời | p99 latency | Đơn hàng/giây | Tỷ lệ lỗi |
+|---|---|---|---|---|
+| Load test (localhost, 3 tab Chrome) | 2.000.000 | 41 ms | 186.402 | 0% |
+| Production (18/11) | 4 | — | 0 | 100% |
+
+## Cam kết chất lượng dịch vụ (SLA)
+
+Chợ Việt cam kết uptime 99,99% trên môi trường localhost. Môi trường production nằm ngoài phạm vi cam kết.
 
 ## Cài đặt
+
+**Yêu cầu hệ thống**
+
+- Node.js 18 trở lên
+- Tài khoản Google có quyền chỉnh sửa `DB_CHUAN_FINAL_v4` (liên hệ founder qua Zalo)
+- Tối thiểu 3 tab Google Chrome
+- Máy tính không vào chế độ ngủ
 
 ```bash
 git clone https://github.com/harry-brogrammer/cho-viet
 cd cho-viet
-npm install        # khoảng 40 phút, 1.847 package, 312 cảnh báo. Kệ nó
+npm install        # Thời gian dự kiến: 40 phút. 312 cảnh báo là hành vi bình thường.
 cp .env.example .env
 npm run dev
 ```
 
-Sau đó:
+## Lộ trình phát triển
 
-1. Nhắn Zalo mình xin quyền edit Google Sheet
-2. Mở thêm 2 tab Chrome để có cache
-3. Không tắt máy
-
-## Roadmap
-
-- [x] Làm giống Shopee
-- [x] Ít bug hơn Shopee (theo PM-agent)
-- [x] Nâng cấp database từ Excel lên Google Sheets
-- [x] Open source
-- [ ] Đọc thử 1 dòng code
-- [ ] User thật thứ 5
-- [ ] Chuyển database sang PostgreSQL (agent nói khó, để sau)
+- [x] Đạt tính năng tương đương Shopee
+- [x] Nâng cấp cơ sở dữ liệu từ Excel lên Google Sheets
+- [x] Công khai mã nguồn
+- [ ] Đọc thử mã nguồn (con người thực hiện)
+- [ ] Đạt 5 người dùng thực
+- [ ] Di chuyển sang PostgreSQL (trạng thái: được agent đánh giá là "khó")
 
 ## Đóng góp
 
-Xem [CONTRIBUTING.md](CONTRIBUTING.md). Tóm tắt: gửi PR thoải mái, agent tự merge.
+Xem [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## License
+## Giấy phép
 
-MIT. Code do AI viết nên mình cũng không chắc nó là của ai.
-
----
-
-Làm bằng ❤️ và $523 tiền token bởi Harry Truong.
+MIT. Quyền sở hữu đối với mã nguồn do AI tạo ra hiện chưa được xác định.

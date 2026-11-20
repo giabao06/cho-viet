@@ -1,12 +1,12 @@
 // payment-service
-// Service duy nhất chưa sập lần nào, vì nó là mình.
+// Thành phần duy nhất chưa từng gặp sự cố, do được vận hành trực tiếp bởi founder.
 
 export async function pay(order) {
-  console.log(`Chuyển khoản ${order.total}đ rồi nhắn Zalo cho Harry nha`);
-  return { status: "CHO_HARRY_CHECK_ZALO" };
+  console.log(`Vui lòng chuyển khoản ${order.total}đ và gửi xác nhận qua Zalo.`);
+  return { status: "CHO_FOUNDER_XAC_NHAN" };
 }
 
 export async function refund(order) {
-  // TODO: agent hỏi refund xử lý sao. Mình chưa nghĩ tới việc trả tiền lại.
+  // Chính sách hoàn tiền đang trong quá trình xây dựng.
   throw new Error("Not implemented");
 }

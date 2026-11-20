@@ -1,5 +1,5 @@
-# 10 service khác
+# 10 service còn lại
 
-Agent tạo ra lúc 3h sáng ngày 3.
+Được agent khởi tạo lúc 03:12 ngày 18/11.
 
-Chưa ai biết mấy service này để làm gì. Nhưng tắt đi thì sập cả web, nên mình để đó.
+Chức năng của các service này hiện chưa được xác định. Việc tắt bất kỳ service nào trong nhóm này dẫn đến ngừng hoạt động toàn bộ hệ thống, do đó các service được duy trì nguyên trạng.

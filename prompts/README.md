@@ -1,5 +1,7 @@
 # prompts/
 
-Đây mới là source code thật của Chợ Việt.
+Thư mục này chứa mã nguồn gốc của Chợ Việt.
 
-184.920 dòng trong `services/` chỉ là file build ra từ mấy file này. Muốn sửa gì thì sửa ở đây rồi chạy lại agent, đừng sửa code. Mình cũng không biết sửa code.
+184.920 dòng mã trong `services/` là sản phẩm được sinh ra từ các tệp này. Mọi thay đổi cần được thực hiện tại đây, sau đó chạy lại agent. Không chỉnh sửa trực tiếp mã đã sinh.
+
+Các tệp được giữ nguyên văn để phục vụ mục đích kiểm toán.

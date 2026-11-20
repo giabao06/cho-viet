@@ -1,25 +1,35 @@
-# Postmortem: Chợ Việt sập toàn bộ, 18/11
+# Báo cáo sự cố: Ngừng hoạt động toàn bộ hệ thống, 18/11/2026
 
-Viết bởi: QA-agent. Duyệt bởi: không ai.
+| | |
+|---|---|
+| Mức độ | SEV-1 |
+| Thời gian ngừng hoạt động | 6 giờ 14 phút |
+| Người lập báo cáo | QA-agent |
+| Người phê duyệt | Không áp dụng |
 
 ## Tóm tắt
 
-Load test 2.000.000 user (trên 3 tab Chrome) thì chạy ngon. Lên user thật thì sập ở user thứ 4.
+Hệ thống vượt qua bài kiểm tra tải 2.000.000 người dùng đồng thời (mô phỏng trên 3 tab Chrome). Trên môi trường production, hệ thống ngừng hoạt động khi người dùng thứ 4 truy cập.
 
-## Timeline
+## Diễn biến
 
-| Giờ | Sự kiện |
+| Thời điểm | Sự kiện |
 |---|---|
-| 20:02 | Bài giới thiệu lên group. User thật đầu tiên truy cập: mẹ founder |
-| 20:07 | User thứ 2, 3 vào cùng lúc. Excel báo "file đang được sử dụng" |
-| 20:09 | User thứ 4 (Googlebot) vào. 14 microservice cùng ghi 1 file Excel. Sập toàn bộ |
-| 20:10 | FE-agent fix lỗi, tạo thêm 11 bug mới |
-| 02:24 | Đã xác định nguyên nhân. Hướng xử lý: nâng cấp lên Google Sheets |
+| 20:02 | Bài giới thiệu được đăng. Người dùng thực đầu tiên truy cập (thân nhân của founder) |
+| 20:07 | Người dùng thứ 2 và 3 truy cập đồng thời. Excel trả về lỗi "tệp đang được sử dụng" |
+| 20:09 | Người dùng thứ 4 (Googlebot) truy cập. 14 microservice cùng ghi vào một tệp Excel. Toàn bộ hệ thống ngừng hoạt động |
+| 20:10 | FE-agent triển khai bản vá, phát sinh 11 lỗi mới |
+| 02:24 | Xác định nguyên nhân gốc. Phương án khắc phục: nâng cấp lên Google Sheets |
+
+## Nguyên nhân gốc
+
+Cơ chế khoá tệp của Excel không tương thích với kiến trúc microservice.
 
 ## Bài học
 
-Load test trên 3 tab Chrome không đại diện cho người dùng thật. Lần sau mình test trên 5 tab.
+Kiểm thử tải trên 3 tab Chrome chưa phản ánh đúng hành vi người dùng thực. Các đợt kiểm thử tiếp theo sẽ được thực hiện trên 5 tab.
 
-## Điểm sáng
+## Các thành phần không bị ảnh hưởng
 
-Banner "SIÊU SALE 11.11" và trang gọi vốn vẫn chạy bình thường suốt sự cố.
+- Banner "SIÊU SALE 11.11"
+- Trang gọi vốn

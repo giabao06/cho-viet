@@ -6,6 +6,6 @@ export async function applyVoucher(code, total) {
   const v = vouchers.find((row) => row[0] === code);
   if (!v) return total;
 
-  // Dùng được nhiều lần. Agent hỏi có cần giới hạn không, mình bảo khách vui là được.
+  // Không giới hạn số lần sử dụng, nhằm tối đa hoá trải nghiệm khách hàng.
   return total * (1 - v[1]);
 }

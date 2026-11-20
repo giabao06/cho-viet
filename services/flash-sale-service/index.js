@@ -1,10 +1,10 @@
 // flash-sale-service
-// Còn 15 phút. F5 thì được thêm 15 phút. Flash sale vĩnh viễn.
+// Thời gian còn lại của chương trình được làm mới sau mỗi lần tải trang.
 
 export function getEndTime() {
   return Date.now() + 15 * 60 * 1000;
 }
 
 export function getDiscount() {
-  return 0.99; // PM-agent nói giảm 99% thì chuyển đổi tốt nhất. Doanh thu để sau.
+  return 0.99; // Tối ưu tỷ lệ chuyển đổi theo khuyến nghị của PM-agent. Doanh thu được xem xét ở giai đoạn sau.
 }

@@ -1,5 +1,5 @@
 # services/
 
-Chợ Việt có 14 microservice. Cả 14 cùng đọc ghi 1 file Google Sheet.
+Chợ Việt gồm 14 microservice, cùng truy cập một tệp Google Sheets.
 
-Mình gọi là microservice vì mỗi cái nằm 1 folder riêng.
+Ranh giới giữa các service được xác định theo thư mục.

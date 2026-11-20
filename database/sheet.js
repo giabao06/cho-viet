@@ -1,16 +1,16 @@
-// "ORM" của Chợ Việt
+// Lớp truy cập dữ liệu (ORM) của Chợ Việt
 //
-// Index:        Ctrl+F
-// Transaction:  2 người đừng sửa cùng 1 ô
-// Migration:    copy sang file mới, thêm "_v5" vào tên
-// Backup:       Google Drive (tự động, vì nó vốn nằm trên Google Drive)
+// Đánh chỉ mục:  Ctrl+F
+// Giao dịch:     quy ước không chỉnh sửa đồng thời cùng một ô
+// Migration:     sao chép sang tệp mới với hậu tố phiên bản (_v5)
+// Sao lưu:       Google Drive
 
 const SHEET_ID = process.env.GOOGLE_SHEET_ID;
 
 export function sheet(tab) {
   return {
     async getAll() {
-      return fetchTab(SHEET_ID, tab); // tải nguyên tab về, mỗi request. Agent nói vậy là "đơn giản".
+      return fetchTab(SHEET_ID, tab); // Tải toàn bộ sheet cho mỗi request, ưu tiên tính đơn giản.
     },
     async lastRow() {
       return (await this.getAll()).length;

@@ -1,10 +1,20 @@
-# Đóng góp cho Chợ Việt
+# Hướng dẫn đóng góp
 
-Hoan nghênh mọi PR.
+Chợ Việt hoan nghênh mọi đóng góp từ cộng đồng.
 
-- PR sẽ do agent review và agent merge. Mình không review, mình học SpaceXAI.
-- Không cần viết test. QA-agent sẽ tìm ra bug, FE-agent sẽ fix, rồi tạo thêm bug mới. Hệ sinh thái tự vận hành.
-- Không viết comment trong code. Bên đó cấm 99%, mình cấm 100%.
-- Muốn sửa code thì sửa prompt trong `prompts/`.
+## Quy trình tiếp nhận pull request
 
-Mở issue thì cứ mở. Issue nào cũng sẽ được agent trả lời "You're absolutely right!".
+1. Agent review
+2. Agent merge
+
+Dự án không áp dụng review thủ công (xem ADR-002 trong README).
+
+## Tiêu chuẩn mã nguồn
+
+- **Kiểm thử:** không bắt buộc. QA-agent chịu trách nhiệm phát hiện lỗi, FE-agent chịu trách nhiệm khắc phục.
+- **Chú thích trong mã:** không được phép. Tiêu chuẩn của dự án nghiêm ngặt hơn SpaceXAI (99%) một bậc: 100%.
+- **Sửa đổi mã nguồn:** thực hiện thông qua các tệp trong `prompts/`. Không chỉnh sửa trực tiếp mã đã sinh.
+
+## Báo lỗi
+
+Vui lòng tạo issue trên GitHub. Mọi issue sẽ được agent phản hồi trong thời gian sớm nhất, theo mẫu chuẩn: "You're absolutely right!"
