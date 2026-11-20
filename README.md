@@ -43,7 +43,7 @@ Mình suy nghĩ 3 ngày (thật ra là agent suy nghĩ, mình ngủ). Cách tố
 ## Cài đặt
 
 ```bash
-git clone https://github.com/DinhTruong98/cho-viet
+git clone https://github.com/harry-brogrammer/cho-viet
 cd cho-viet
 npm install        # khoảng 40 phút, 1.847 package, 312 cảnh báo. Kệ nó
 cp .env.example .env
