@@ -216,6 +216,11 @@
   .toast { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%) translateY(20px); background: rgba(0,0,0,.85); color: #fff; padding: 10px 16px; border-radius: 6px; font-size: 13px; z-index: 200; opacity: 0; pointer-events: none; transition: .2s; max-width: calc(100% - 32px); text-align: center; }
   .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
   .toast.err { background: #b00020; }
+
+  .demo { margin-top: 12px; background: #fff4f2; border: 1px solid #ffc9bd; color: #8a2a14; border-radius: 8px; padding: 10px 12px; font-size: 12.5px; line-height: 1.5; }
+  .zalo { display: flex; align-items: center; gap: 10px; margin-top: 8px; background: #0068ff; color: #fff; font-weight: 700; font-size: 14px; padding: 10px 14px; border-radius: 8px; width: 100%; }
+  .zalo span { background: #fff; color: #0068ff; font-weight: 800; font-size: 12px; padding: 3px 7px; border-radius: 6px; letter-spacing: .2px; }
+  .zalo:active { opacity: .85; }
 </style>
 </head>
 <body>
@@ -247,10 +252,11 @@
   <section class="view on" id="v-home">
     <div class="banner">
       <h2>SIÊU SALE 11.11</h2>
-      <p>Voucher giảm đến 99% · Freeship toàn quốc · Thanh toán: chuyển khoản, xác nhận qua Zalo</p>
+      <p>Voucher giảm đến 99% · Freeship toàn quốc · Founder xác nhận đơn qua Zalo</p>
       <div class="big">99%</div>
     </div>
     <div class="notice">📢 Ngày 20/11/2026, Chợ Việt chính thức công khai mã nguồn. <a href="https://github.com/harry-brogrammer/cho-viet" target="_blank" rel="noopener">Xem trên GitHub ›</a></div>
+    <div class="demo">⚠️ <b>Trang trình diễn.</b> Chợ Việt không bán hàng và không nhận thanh toán. Vui lòng không chuyển tiền và không gửi thông tin cá nhân cho bất kỳ ai.</div>
 
     <div class="cats" id="cats"></div>
 
@@ -306,9 +312,9 @@
       <div id="myorders"></div>
     </div>
     <div class="sec list">
-      <div class="li"><div class="ic">📊</div><div><b>Cơ sở dữ liệu</b><p>Phục vụ mục đích minh bạch, người dùng có thể xem trực tiếp cơ sở dữ liệu. <a href="#" onclick="openSheet('Orders');return false;">Mở DB_CHUAN_FINAL_v4</a></p></div></div>
+      <div class="li"><div class="ic">📊</div><div><b>Cơ sở dữ liệu</b><p>Phục vụ mục đích minh bạch, người dùng có thể xem trực tiếp cơ sở dữ liệu. <a href="#" onclick="openDb();return false;">Mở DB_CHUAN_FINAL_v4</a></p></div></div>
       <div class="li"><div class="ic">💻</div><div><b>Mã nguồn</b><p><a href="https://github.com/harry-brogrammer/cho-viet" target="_blank" rel="noopener">github.com/harry-brogrammer/cho-viet</a></p></div></div>
-      <div class="li"><div class="ic">💬</div><div><b>Chăm sóc khách hàng</b><p>Founder trực tiếp hỗ trợ qua Zalo. Thời gian phản hồi phụ thuộc vào giờ ngủ của founder.</p></div></div>
+      <div class="li"><div class="ic">💬</div><div><b>Chăm sóc khách hàng</b><p>Founder trực tiếp hỗ trợ qua Zalo. Thời gian phản hồi phụ thuộc vào giờ ngủ của founder. <a href="#" id="zaloLink" target="_blank" rel="noopener">Nhắn founder</a></p></div></div>
     </div>
   </section>
 
@@ -374,6 +380,15 @@
 <div class="toast" id="toast"></div>
 
 <script>
+// Cấu hình production. Founder điền sau khi triển khai database/apps-script/Code.gs.
+// Để trống ORDER_API thì đơn hàng chỉ được lưu tại bộ nhớ đệm (tab Chrome thứ 3).
+const CONFIG = {
+  ORDER_API: "https://script.google.com/macros/s/AKfycbwxy0yYNzyV316UCOwnpFRffYu6moxOc2UnEdp5Lw9APkRhUJHjW5wLRH1cWp0FnuIy/exec",  // URL ứng dụng web Apps Script, dạng https://script.google.com/macros/s/…/exec
+  SHEET_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTm15dFFcHNMfSIVJzw0WP621o0sZPn8lwt9uPhUzoh2nCblxaS5WZlqiADhASoPa66veb8-6pMetXb/pubhtml",  // DB_CHUAN_FINAL_v4, bản công bố chỉ xem
+  ZALO_URL: "https://www.facebook.com/profile.php?id=61596450370450", // Tạm thời: Page Harry Truong. Zalo OA đang chờ xác minh.
+};
+const ZALO_READY = /^https:\/\/zalo\.me\//.test(CONFIG.ZALO_URL);
+
 // Dữ liệu sản phẩm. Nguồn chính thức: DB_CHUAN_FINAL_v4, tab Products. Bản sao dưới đây được FE-agent chép tay.
 const PRODUCTS = [
   { id: 1,  e: "🎧", bg: "#eef6ff", cat: "dt", name: "Tai nghe chống ồn không dây, pin 40 giờ", price: 19000, old: 1900000, sold: 1200, pct: 92, desc: "Chống ồn chủ động. Phù hợp để không nghe thấy cuộc gọi cảnh báo từ hệ thống giám sát." },
@@ -398,6 +413,7 @@ const SEED_ORDERS = [
 ];
 
 const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const vnd = n => "₫" + Math.round(n).toLocaleString("vi-VN");
 const sold = n => n >= 1000 ? (n / 1000).toFixed(1).replace(".", ",").replace(",0", "") + "K" : String(n);
 const off = p => p.old > p.price ? Math.round((1 - p.price / p.old) * 100) : 0;
@@ -448,7 +464,7 @@ function founderAwake() { const h = new Date().getHours(); return h >= 7; }
 function renderStatus() {
   const awake = founderAwake();
   const rows = [
-    ["Cơ sở dữ liệu", "Google Sheets · DB_CHUAN_FINAL_v4", "ok", "Hoạt động"],
+    ["Cơ sở dữ liệu", "Google Sheets · DB_CHUAN_FINAL_v4 · công khai chỉ xem", CONFIG.ORDER_API ? "ok" : "warn", CONFIG.ORDER_API ? "Hoạt động" : "Chờ founder kết nối"],
     ["Bộ nhớ đệm", "Tab Chrome thứ 3 · yêu cầu duy trì mở 24/7", "ok", "Hoạt động"],
     ["Thanh toán", "Founder xác nhận thủ công qua Zalo", awake ? "ok" : "warn", awake ? "Hoạt động" : "Founder đang ngủ"],
     ["Giám sát", "Thân nhân founder · cảnh báo qua điện thoại", "ok", "Hoạt động"],
@@ -524,61 +540,127 @@ function applyV() {
 }
 
 // Đặt hàng
+const DEMO_NOTE = `<div class="demo">⚠️ <b>Trang trình diễn.</b> Chợ Việt không bán hàng và không nhận thanh toán. Vui lòng <b>không chuyển tiền</b>, không gửi họ tên, địa chỉ, số điện thoại hay số tài khoản cho bất kỳ ai.</div>`;
 function checkout() {
   closeOv("cart");
-  $("payTitle").textContent = "Thanh toán";
+  $("payTitle").textContent = "Xác nhận đơn hàng";
   $("payBody").innerHTML = `
-    <div class="box">
+    <div class="box" style="margin-top:0">
       <div class="r"><span>Tổng thanh toán</span><b style="color:var(--brand);font-size:18px">${vnd(total())}</b></div>
-      <div class="r"><span>Phương thức</span><span>Chuyển khoản ngân hàng (duy nhất)</span></div>
-      <div class="r"><span>Thông tin tài khoản</span><span>Được founder gửi qua Zalo</span></div>
-      <div class="r"><span>Địa chỉ giao hàng</span><span>Được founder hỏi qua Zalo</span></div>
+      <div class="r"><span>Thanh toán</span><span>Không áp dụng (trang trình diễn)</span></div>
+      <div class="r"><span>Xác nhận đơn</span><span>Founder, thủ công, qua Zalo</span></div>
+      <div class="r"><span>Thông tin khách hàng</span><span>Không thu thập. Hệ thống tự cấp biệt danh.</span></div>
     </div>
     <div class="steps" style="margin-top:14px">
-      <div class="step"><div class="dotc">1</div><div><b>Chuyển khoản</b><small>Theo thông tin founder cung cấp.</small></div></div>
-      <div class="step"><div class="dotc">2</div><div><b>Chụp ảnh màn hình biên lai</b><small>Định dạng khuyến nghị: ảnh chụp màn hình.</small></div></div>
-      <div class="step"><div class="dotc">3</div><div><b>Gửi ảnh qua Zalo cho founder</b><small>Founder đối chiếu và cập nhật trạng thái trong Google Sheets.</small></div></div>
+      <div class="step"><div class="dotc">1</div><div><b>Đặt hàng</b><small>Đơn được ghi trực tiếp vào Google Sheets, tab Orders.</small></div></div>
+      <div class="step"><div class="dotc">2</div><div><b>Nhắn founder qua Zalo</b><small>Nội dung tin nhắn được sao chép sẵn. Chỉ gồm mã đơn và sản phẩm.</small></div></div>
+      <div class="step"><div class="dotc">3</div><div><b>Theo dõi đơn trong cơ sở dữ liệu</b><small>DB_CHUAN_FINAL_v4 được công khai ở chế độ chỉ xem.</small></div></div>
     </div>
-    <p style="font-size:12px;color:var(--muted);margin-top:10px">Đây là trang trình diễn. Không có giao dịch thật nào được thực hiện.</p>`;
-  $("payFoot").innerHTML = `<button class="btn" onclick="placeOrder()">Tôi đã chuyển khoản</button>`;
+    ${DEMO_NOTE}`;
+  $("payFoot").innerHTML = `<button class="btn" id="placeBtn" onclick="placeOrder()">Đặt hàng</button>`;
   openOv("pay");
 }
-function placeOrder() {
+
+// Mã trình duyệt ẩn danh, chỉ dùng để giới hạn tần suất đặt hàng. Không ghi vào cơ sở dữ liệu.
+function clientId() {
+  let c = cache.get("cid", "");
+  if (!/^[a-z0-9]{6,24}$/.test(c)) { c = (Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)).slice(0, 16); cache.set("cid", c); }
+  return c;
+}
+const API_ERR = {
+  RATE_LIMITED: "Founder chưa kịp nhập đơn trước. Vui lòng thử lại sau ít phút.",
+  DAILY_LIMIT: "Đã đạt hạn mức 3.000 đơn/ngày của Google Sheets. Vui lòng quay lại ngày mai.",
+  DB_FULL: "DB_CHUAN_FINAL_v4 đã đầy. Đang chờ founder tạo DB_CHUAN_FINAL_v5.",
+  BUSY: "Có người khác đang chỉnh sửa cùng một ô. Vui lòng thử lại.",
+};
+async function sendOrder(lines, useVoucher) {
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 15000);
+  try {
+    const r = await fetch(CONFIG.ORDER_API, {
+      method: "POST", signal: ctl.signal, redirect: "follow",
+      headers: { "Content-Type": "text/plain;charset=utf-8" }, // tránh preflight CORS của Apps Script
+      body: JSON.stringify({ cid: clientId(), items: lines, voucher: useVoucher }),
+    });
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+
+async function placeOrder() {
+  const btn = $("placeBtn");
+  if (btn) { btn.disabled = true; btn.textContent = "Đang ghi vào Google Sheets…"; }
   // order-service: id = lastRow() + 1. lastRow() đọc từ Google Sheets, không đọc từ bộ nhớ đệm.
   const id = SEED_ORDERS.length + 1;
-  const dup = orders.some(o => o.id === id);
-  const items = Object.entries(cart).map(([pid, q]) => PRODUCTS.find(p => p.id == pid).name.split(",")[0] + " x" + q).join("; ");
-  orders.push({ id, items, total: total(), at: Date.now(), status: "CHO_FOUNDER_XAC_NHAN" });
+  const lines = Object.entries(cart).map(([pid, q]) => [Number(pid), q]);
+  let items = lines.map(([pid, q]) => PRODUCTS.find(p => p.id === pid).name.split(",")[0] + " x" + q).join("; ");
+  let tot = total(), user = "ban (khách)", row = null, src = "cache";
+  if (CONFIG.ORDER_API) {
+    try {
+      const res = await sendOrder(lines, !!voucher);
+      if (res && res.ok) { items = res.items; tot = res.total; user = res.user; row = res.row; src = "sheets"; }
+      else if (res && API_ERR[res.error]) {
+        toast(API_ERR[res.error], true);
+        if (btn) { btn.disabled = false; btn.textContent = "Đặt hàng"; }
+        return;
+      }
+    } catch (e) { /* Google Sheets không phản hồi: chuyển sang bộ nhớ đệm */ }
+  }
+  const dup = row ? row > SEED_ORDERS.length + 2 : orders.some(o => o.id === id);
+  orders.push({ id, items, total: tot, user, row, src, at: Date.now(), status: "CHO_FOUNDER_XAC_NHAN" });
   cache.set("orders", orders);
   cart = {}; voucher = null; cache.set("cart", cart); render();
   showOrder(orders.length - 1, dup);
 }
+
+function zaloText(o) {
+  return `Chợ Việt – Đơn #${o.id} (CV-${String(o.id).padStart(6, "0")})\nKhách: ${o.user || "ban (khách)"}\nSản phẩm: ${o.items}\nTổng: ${vnd(o.total)}\nĐơn trình diễn, không thanh toán.`;
+}
+function openZalo(i) {
+  // Mở cửa sổ trước, trong cùng thao tác bấm, để trình duyệt di động không chặn.
+  window.open(CONFIG.ZALO_URL, "_blank", "noopener");
+  const txt = zaloText(orders[i]);
+  try { navigator.clipboard.writeText(txt).then(() => toast("Đã sao chép nội dung đơn. Dán vào khung chat để gửi founder."), () => {}); } catch (e) {}
+  orders[i].zalo = Date.now(); cache.set("orders", orders);
+}
+function openDb(id) {
+  if (CONFIG.SHEET_URL) { window.open(CONFIG.SHEET_URL, "_blank", "noopener"); return; }
+  closeOv("pay"); openSheet("Orders", id);
+}
+
 function showOrder(i, dup) {
   const o = orders[i], awake = founderAwake();
+  const where = o.src === "sheets"
+    ? `DB_CHUAN_FINAL_v4 · tab Orders · dòng ${Number(o.row).toLocaleString("vi-VN")}`
+    : `Bộ nhớ đệm (tab Chrome thứ 3) · đồng bộ lên Google Sheets: thủ công`;
   $("payTitle").textContent = "Đơn hàng #" + o.id;
   $("payBody").innerHTML = `
     <div class="code mono">CV-${String(o.id).padStart(6, "0")}</div>
     ${dup ? `<div class="notice" style="margin-top:10px">Mã đơn hàng trùng với đơn trước đó. Đây là hành vi được thiết kế (tính năng mua chung), xem <span class="mono">order-service/index.js</span>.</div>` : ""}
     <div class="steps" style="margin-top:8px">
-      <div class="step"><div class="dotc">✓</div><div><b>Đã ghi nhận đơn hàng</b><small>DB_CHUAN_FINAL_v4 · tab Orders · dòng ${o.id + 1}</small></div></div>
-      <div class="step"><div class="dotc">✓</div><div><b>Đã thông báo cho founder</b><small>Kênh: Zalo</small></div></div>
-      <div class="step"><div class="dotc wait">…</div><div><b>Chờ founder xác nhận thanh toán</b><small>${awake ? "Thời gian xử lý dự kiến: khi founder xem tin nhắn." : "Founder hiện đang ngủ. Đơn hàng sẽ được xác nhận sau 07:00."}</small></div></div>
+      <div class="step"><div class="dotc">✓</div><div><b>Đã ghi nhận đơn hàng</b><small>${where}</small></div></div>
+      <div class="step"><div class="dotc ${o.zalo ? "" : "wait"}">${o.zalo ? "✓" : "2"}</div><div style="flex:1"><b>Nhắn founder qua Zalo</b><small>${ZALO_READY ? "Nội dung đơn được sao chép sẵn, chỉ cần dán và gửi." : "Kênh Zalo đang chờ xác minh. Tạm thời chuyển hướng sang Facebook founder."}</small>
+        <button class="zalo" onclick="openZalo(${i});showOrder(${i},${!!dup})"><span>Zalo</span>Nhắn founder · đơn #${o.id}</button></div></div>
+      <div class="step"><div class="dotc ${o.zalo ? "wait" : "no"}">${o.zalo ? "…" : "3"}</div><div><b>Chờ founder xác nhận</b><small>${awake ? "Thời gian xử lý dự kiến: khi founder xem tin nhắn." : "Founder hiện đang ngủ. Đơn hàng sẽ được xác nhận sau 07:00."}</small></div></div>
       <div class="step"><div class="dotc no">4</div><div><b>Giao hàng</b><small>Đối tác vận chuyển: đang được lựa chọn.</small></div></div>
     </div>
-    <div class="box"><div class="r"><span>Trạng thái</span><span class="mono">CHO_FOUNDER_XAC_NHAN</span></div><div class="r"><span>Tổng tiền</span><span>${vnd(o.total)}</span></div></div>`;
-  $("payFoot").innerHTML = `<button class="btn ghost" onclick="refund()">Yêu cầu hoàn tiền</button><button class="btn" onclick="closeOv('pay');openSheet('Orders', ${o.id})">Xem trong cơ sở dữ liệu</button>`;
+    <div class="box">
+      <div class="r"><span>Trạng thái</span><span class="mono">CHO_FOUNDER_XAC_NHAN</span></div>
+      ${o.user ? `<div class="r"><span>Biệt danh</span><span class="mono">${esc(o.user)}</span></div>` : ""}
+      <div class="r"><span>Tổng tiền</span><span>${vnd(o.total)}</span></div>
+    </div>
+    ${DEMO_NOTE}`;
+  $("payFoot").innerHTML = `<button class="btn ghost" onclick="refund()">Yêu cầu hoàn tiền</button><button class="btn" onclick="openDb(${o.id})">Xem trong cơ sở dữ liệu</button>`;
   openOv("pay");
 }
 function refund() { toast("Error: Not implemented (payment-service/index.js, hàm refund)", true); }
 function renderMyOrders() {
   $("myorders").innerHTML = orders.length ? orders.map((o, i) => `
-    <div class="li"><div class="ic">📦</div><div style="flex:1"><b>Đơn #${o.id}</b><small>${new Date(o.at).toLocaleString("vi-VN")}</small><p>${o.items} · ${vnd(o.total)}</p><p><a href="#" onclick="showOrder(${i});return false;">CHO_FOUNDER_XAC_NHAN ›</a></p></div></div>`).reverse().join("")
+    <div class="li"><div class="ic">📦</div><div style="flex:1"><b>Đơn #${o.id}</b><small>${new Date(o.at).toLocaleString("vi-VN")}</small><p>${esc(o.items)} · ${vnd(o.total)}</p><p><a href="#" onclick="showOrder(${i});return false;">CHO_FOUNDER_XAC_NHAN ›</a></p></div></div>`).reverse().join("")
     : `<div class="empty">Chưa có đơn hàng.</div>`;
 }
 
 // Cơ sở dữ liệu
 const SHEETS = {
-  Orders: () => [["id", "user", "items", "total", "status"], ...SEED_ORDERS, ...orders.map(o => [o.id, "ban (khách)", o.items, o.total, o.status])],
+  Orders: () => [["id", "user", "items", "total", "status"], ...SEED_ORDERS, ...orders.map(o => [o.id, o.user || "ban (khách)", o.items, o.total, o.status])],
   Vouchers: () => [["code", "discount", "max_uses", "ghi_chu"], ["SALE1111", 0.99, "", "Không giới hạn"], ["FREESHIP", 0.99, "", "Không giới hạn"], ["*", 0.99, "", "Mọi mã khác (thêm bởi PM-agent để tăng chuyển đổi)"]],
   Products: () => [["id", "name", "price", "old_price", "sold"], ...PRODUCTS.map(p => [p.id, p.name, p.price, p.old, p.sold])],
   "Cache (tab Chrome 3)": () => [["key", "value"], ["cart", JSON.stringify(cart)], ["orders", orders.length + " đơn"], ["ghi_chu", "Không đóng tab này"]],
@@ -593,7 +675,6 @@ function openSheet(tab, hl) {
   const cols = Math.max(...rows.map(r => r.length));
   const L = i => String.fromCharCode(65 + i);
   const fmt = v => typeof v === "number" && v > 999 ? v.toLocaleString("vi-VN") : (v === "" ? "" : String(v));
-  const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
   let html = `<tr><th></th>${Array.from({ length: cols }, (_, i) => `<th>${L(i)}</th>`).join("")}</tr>`;
   rows.forEach((r, ri) => {
     const mine = shTab === "Orders" && ri > SEED_ORDERS.length;
@@ -644,6 +725,7 @@ function heartbeat() {
 setInterval(heartbeat, 1000); heartbeat();
 
 addEventListener("keydown", e => { if (e.key === "Escape") document.querySelectorAll(".ov.on").forEach(o => closeOv(o.id.slice(3))); });
+$("zaloLink").href = CONFIG.ZALO_URL;
 render();
 </script>
 </body>
