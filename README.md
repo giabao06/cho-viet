@@ -4,6 +4,11 @@
 > The end goal is to attach a SQLite database and build a *real*-ish backend using Elysia, because why not <(")
 > Also using Drizzle ORM because apparently the founder [didn't want to learn SQL](docs/prompts/02-database.md) :shrug:
 
+## Other Changes in this fork
+
+- Other language documentation readme, `load-test` and `prompts` are moved into `docs/`
+- Frontend moved to `frontend/`
+
 The following is the original readme from upstream.
 
 ---
