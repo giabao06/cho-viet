@@ -5,6 +5,7 @@
     "": {
       "name": "backend",
       "dependencies": {
+        "@elysia/cors": "^1.4.3",
         "@elysia/static": "^1.4.12",
         "@libsql/client": "^0.18.0",
         "dotenv": "^18.0.10",
@@ -20,6 +21,8 @@
   },
   "packages": {
     "@borewit/text-codec": ["@borewit/text-codec@0.2.3", "", {}, "sha512-49CycTz1aAZmvFcwkeFyhud1HUmRIB5Tabf7ALV+VA4Iu85MTfz2cUwzPagMFAdVBvrWdkCxG67I30tUwwpKsw=="],
+
+    "@elysia/cors": ["@elysia/cors@1.4.3", "", { "peerDependencies": { "elysia": ">= 1.4.0" } }, "sha512-GaqNr6ufqAKbw8SVbxYozHdGFQm1AhXWvndWvoK9uyep99Jq+uI5msQfRkzUo1s5QGIjkCkCGX9XGViaDsp+0A=="],
 
     "@elysia/static": ["@elysia/static@1.4.12", "", { "peerDependencies": { "elysia": ">= 1.4.0" } }, "sha512-kJRsIxXqtgE+qSYyta+e5aXSQSMfIjmDmqw6x8sXmytcpZrulYmb5dHHc5tk3Bgcbf3zSwN17fQozFkq5CXAdw=="],
 
