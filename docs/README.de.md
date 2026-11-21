@@ -1,6 +1,6 @@
 # Chợ Việt
 
-🌐 [Tiếng Việt](README.md) · [English](README.en.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · **Deutsch**
+🌐 [Tiếng Việt](../README.md) · [English](README.en.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · **Deutsch**
 
 E-Commerce-Plattform der nächsten Generation, vollständig entwickelt von einem Multi-Agenten-KI-System.
 

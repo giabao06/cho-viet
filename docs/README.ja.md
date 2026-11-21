@@ -1,6 +1,6 @@
 # Chợ Việt
 
-🌐 [Tiếng Việt](README.md) · [English](README.en.md) · [简体中文](README.zh-CN.md) · **日本語** · [한국어](README.ko.md) · [Español](README.es.md) · [Deutsch](README.de.md)
+🌐 [Tiếng Việt](../README.md) · [English](README.en.md) · [简体中文](README.zh-CN.md) · **日本語** · [한국어](README.ko.md) · [Español](README.es.md) · [Deutsch](README.de.md)
 
 マルチエージェント AI システムのみで開発された次世代 EC プラットフォーム。
 

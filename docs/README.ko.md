@@ -1,6 +1,6 @@
 # Chợ Việt
 
-🌐 [Tiếng Việt](README.md) · [English](README.en.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · **한국어** · [Español](README.es.md) · [Deutsch](README.de.md)
+🌐 [Tiếng Việt](../README.md) · [English](README.en.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · **한국어** · [Español](README.es.md) · [Deutsch](README.de.md)
 
 멀티 에이전트 AI 시스템만으로 개발된 차세대 이커머스 플랫폼.
 

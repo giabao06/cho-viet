@@ -1,6 +1,6 @@
 # Chợ Việt
 
-🌐 [Tiếng Việt](README.md) · [English](README.en.md) · **简体中文** · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Deutsch](README.de.md)
+🌐 [Tiếng Việt](../README.md) · [English](README.en.md) · **简体中文** · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Deutsch](README.de.md)
 
 新一代电商平台，完全由多智能体（multi-agent）AI 系统开发。
 
