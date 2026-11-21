@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chợ Việt – Sàn thương mại điện tử thế hệ mới</title>
+<meta name="description" content="Chợ Việt: nền tảng thương mại điện tử phát triển hoàn toàn bởi AI. Cơ sở dữ liệu: Google Sheets.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ee4d2d'/><text x='50' y='70' font-size='60' text-anchor='middle'>🛍</text></svg>">
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
+<!--
+  Frontend Chợ Việt.
+  Tác giả: FE-agent. Người đọc: chưa có.
+  Toàn bộ frontend nằm trong 1 tệp, theo khuyến nghị của FE-agent nhằm giảm số tệp cần review (hiện tại: 0).
+-->
+
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="hrow">
+      <a class="brand" href="#" onclick="go('home');return false;"><span class="logo">🛍</span>Chợ Việt</a>
+      <span class="beta">beta · build 0.4.1</span>
+      <span class="hspacer"></span>
+      <form class="search" onsubmit="doSearch(event)">
+        <span>🔍</span>
+        <input id="q" type="search" placeholder='Tìm "tai nghe 1k", "laptop 0đ"…' autocomplete="off" oninput="render()">
+        <button type="submit">Tìm</button>
+      </form>
+      <button class="cartbtn" onclick="openCart()" aria-label="Giỏ hàng">🛒<span class="badge" id="badge">0</span></button>
+    </div>
+    <div class="statusline">
+      <span>🟢 Hệ thống: <b id="sysState">hoạt động bình thường</b></span>
+      <span>👥 Người dùng đồng thời: <b id="users">1</b>/3</span>
+      <span>📊 Cơ sở dữ liệu: <b>DB_CHUAN_FINAL_v4</b></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Trang chủ -->
+  <section class="view on" id="v-home">
+    <div class="banner">
+      <h2>SIÊU SALE 11.11</h2>
+      <p>Voucher giảm đến 99% · Freeship toàn quốc · Founder xác nhận đơn qua Zalo</p>
+      <div class="big">99%</div>
+    </div>
+    <div class="notice">📢 Ngày 20/11/2026, Chợ Việt chính thức công khai mã nguồn. <a href="https://github.com/harry-brogrammer/cho-viet" target="_blank" rel="noopener">Xem trên GitHub ›</a></div>
+    <div class="demo">⚠️ <b>Trang trình diễn.</b> Chợ Việt không bán hàng và không nhận thanh toán. Vui lòng không chuyển tiền và không gửi thông tin cá nhân cho bất kỳ ai.</div>
+
+    <div class="cats" id="cats"></div>
+
+    <div class="sec">
+      <div class="sechead">
+        <span class="fs">⚡ FLASH SALE</span>
+        <div class="clock"><span id="hh">00</span><span id="mm">15</span><span id="ss">00</span></div>
+        <small>Thời gian được làm mới <br>sau mỗi lần tải trang</small>
+      </div>
+      <div class="grid" id="flash"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sechead"><h3 id="listTitle">Gợi ý hôm nay</h3><small id="listNote">Đánh chỉ mục: Ctrl+F</small></div>
+      <div class="grid" id="all"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sechead"><h3>Trạng thái hệ thống</h3><small>Cập nhật thủ công bởi founder</small></div>
+      <div class="stat" id="stat"></div>
+    </div>
+  </section>
+
+  <!-- Live -->
+  <section class="view" id="v-live">
+    <div class="sec">
+      <div class="empty">
+        <div style="font-size:56px">🎬</div>
+        <p style="font-size:16px;color:#222;font-weight:600;margin-top:8px">Hiện không có phiên livestream nào</p>
+        <p style="margin-top:6px">Phiên livestream tiếp theo: khi founder có thời gian.<br>Live-agent đang trong quá trình huấn luyện nói tiếng Việt.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Thông báo -->
+  <section class="view" id="v-noti">
+    <div class="sec list">
+      <div class="sechead"><h3>Thông báo</h3></div>
+      <div class="li"><div class="ic">📦</div><div><b>Chợ Việt chính thức công khai mã nguồn</b><small>20/11/2026</small><p>Nhằm đảm bảo tính minh bạch, toàn bộ mã nguồn được công khai theo giấy phép MIT. <a href="https://github.com/harry-brogrammer/cho-viet" target="_blank" rel="noopener">Xem repository</a></p></div></div>
+      <div class="li"><div class="ic">🚨</div><div><b>Báo cáo sự cố SEV-1 ngày 18/11</b><small>18/11/2026</small><p>Hệ thống ngừng hoạt động khi có 4 người dùng truy cập đồng thời. Nguyên nhân gốc: tệp Excel bị khoá. Biện pháp khắc phục: nâng cấp lên Google Sheets. <a href="https://github.com/harry-brogrammer/cho-viet/blob/main/docs/postmortem-2026-11-18.md" target="_blank" rel="noopener">Đọc postmortem</a></p></div></div>
+      <div class="li"><div class="ic">🎉</div><div><b>Chợ Việt ra mắt phiên bản beta</b><small>17/11/2026</small><p>Phát triển trong 14 ngày bởi 6 AI agent. Tổng chi phí 523,41 USD (chưa bao gồm điện).</p></div></div>
+      <div class="li"><div class="ic">🎟</div><div><b>Voucher không giới hạn số lần sử dụng</b><small>Thường trực</small><p>Mọi mã voucher hợp lệ được áp dụng không giới hạn, nhằm tối đa hoá trải nghiệm khách hàng.</p></div></div>
+    </div>
+  </section>
+
+  <!-- Tôi -->
+  <section class="view" id="v-me">
+    <div class="sec list">
+      <div class="li"><div class="ic">👤</div><div><b>Khách</b><small>Chưa đăng nhập</small><p>Tính năng tài khoản đang được Auth-agent xây dựng. Thời gian hoàn thành dự kiến: 14 ngày (ước tính của agent).</p></div></div>
+    </div>
+    <div class="sec list">
+      <div class="sechead"><h3>Đơn hàng của tôi</h3><small>Nguồn: tab Chrome thứ 3</small></div>
+      <div id="myorders"></div>
+    </div>
+    <div class="sec list">
+      <div class="li"><div class="ic">📊</div><div><b>Cơ sở dữ liệu</b><p>Phục vụ mục đích minh bạch, người dùng có thể xem trực tiếp cơ sở dữ liệu. <a href="#" onclick="openDb();return false;">Mở DB_CHUAN_FINAL_v4</a></p></div></div>
+      <div class="li"><div class="ic">💻</div><div><b>Mã nguồn</b><p><a href="https://github.com/harry-brogrammer/cho-viet" target="_blank" rel="noopener">github.com/harry-brogrammer/cho-viet</a></p></div></div>
+      <div class="li"><div class="ic">💬</div><div><b>Chăm sóc khách hàng</b><p>Founder trực tiếp hỗ trợ qua Zalo. Thời gian phản hồi phụ thuộc vào giờ ngủ của founder. <a href="#" id="zaloLink" target="_blank" rel="noopener">Nhắn founder</a></p></div></div>
+    </div>
+  </section>
+
+  <footer>
+    Chợ Việt · build 0.4.1 · Phát triển bởi 6 AI agent · Code review: 0%<br>
+    Uptime 99,99% (localhost) · <a href="https://github.com/harry-brogrammer/cho-viet" target="_blank" rel="noopener">Mã nguồn</a> · Giấy phép MIT<br>
+    Đây là trang trình diễn. Chợ Việt không bán hàng và không nhận thanh toán.
+  </footer>
+</main>
+
+<nav class="tabbar"><div class="in">
+  <button class="on" data-v="home" onclick="go('home')"><i>🏠</i>Trang chủ</button>
+  <button data-v="live" onclick="go('live')"><i>🎬</i>Live</button>
+  <button data-v="noti" onclick="go('noti')"><i>🔔</i>Thông báo</button>
+  <button data-v="me" onclick="go('me')"><i>👤</i>Tôi</button>
+</div></nav>
+
+<!-- Chi tiết sản phẩm -->
+<div class="ov" id="ov-pd" onclick="if(event.target===this)closeOv('pd')"><div class="panel">
+  <div class="ph"><h3>Chi tiết sản phẩm</h3><button class="x" onclick="closeOv('pd')">×</button></div>
+  <div class="pb" id="pd"></div>
+  <div class="pf"><button class="btn ghost" id="pdAdd">Thêm vào giỏ</button><button class="btn" id="pdBuy">Mua ngay</button></div>
+</div></div>
+
+<!-- Giỏ hàng -->
+<div class="ov" id="ov-cart" onclick="if(event.target===this)closeOv('cart')"><div class="panel">
+  <div class="ph"><h3>Giỏ hàng</h3><button class="x" onclick="closeOv('cart')">×</button></div>
+  <div class="pb" id="cartBody"></div>
+  <div class="pf"><button class="btn" id="checkoutBtn" onclick="checkout()">Đặt hàng</button></div>
+</div></div>
+
+<!-- Thanh toán / trạng thái đơn -->
+<div class="ov" id="ov-pay" onclick="if(event.target===this)closeOv('pay')"><div class="panel">
+  <div class="ph"><h3 id="payTitle">Thanh toán</h3><button class="x" onclick="closeOv('pay')">×</button></div>
+  <div class="pb" id="payBody"></div>
+  <div class="pf" id="payFoot"></div>
+</div></div>
+
+<!-- Cơ sở dữ liệu -->
+<div class="ov" id="ov-sheet" onclick="if(event.target===this)closeOv('sheet')"><div class="panel wide">
+  <div class="sh-top">
+    <div class="sh-ic"></div>
+    <div class="sh-t"><b>DB_CHUAN_FINAL_v4</b><small>Đã lưu vào Drive · Chỉnh sửa lần cuối bởi PM-agent</small></div>
+    <div class="viewers" id="viewers"></div>
+    <button class="x" onclick="closeOv('sheet')">×</button>
+  </div>
+  <div class="fx"><span>fx</span><div id="fx"></div></div>
+  <div class="gridwrap"><table class="sh" id="sh"></table></div>
+  <div class="sh-tabs" id="shTabs"></div>
+  <div class="sh-note">Đánh chỉ mục: Ctrl+F · Giao dịch: vui lòng không chỉnh sửa đồng thời cùng một ô · Giới hạn 10.000.000 ô, sau đó chuyển sang DB_CHUAN_FINAL_v5</div>
+</div></div>
+
+<!-- Sự cố -->
+<div class="outage" id="outage"><div class="c">
+  <span class="sev">SEV-1</span>
+  <div class="num" id="outNum">4/3</div>
+  <h2>Hệ thống tạm ngừng hoạt động</h2>
+  <p>Số người dùng đồng thời đã vượt giới hạn thiết kế. Hệ thống tạm ngừng nhằm bảo vệ cơ sở dữ liệu khỏi tình trạng chỉnh sửa đồng thời cùng một ô.</p>
+  <p>Vui lòng đóng bớt tab Chợ Việt. Hệ thống sẽ tự khôi phục.</p>
+  <p style="margin-top:18px;font-size:13px">Sự cố tương tự đã được ghi nhận ngày 18/11. <a href="https://github.com/harry-brogrammer/cho-viet/blob/main/docs/postmortem-2026-11-18.md" target="_blank" rel="noopener">Xem postmortem</a></p>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+</body>
+</html>
