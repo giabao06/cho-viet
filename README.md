@@ -4,6 +4,10 @@
 > The end goal is to attach a SQLite database and build a *real*-ish backend using Elysia, because why not <(")
 > Also using Drizzle ORM because apparently the founder didn't want to learn SQL :shrug:
 
+The following is the original readme from upstream.
+
+---
+
 # Chợ Việt
 
 🌐 **Tiếng Việt** · [English](docs/README.en.md) · [简体中文](docs/README.zh-CN.md) · [日本語](docs/README.ja.md) · [한국어](docs/README.ko.md) · [Español](docs/README.es.md) · [Deutsch](docs/README.de.md)
