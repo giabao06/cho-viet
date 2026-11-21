@@ -1,3 +1,9 @@
+> [!NOTE]
+> I'm doing this to poke fun. Technically I will not be allowed to sync upstream because I modified the source code by hand (see [CONTRIBUTING.md](CONTRIBUTING.md))
+> 
+> The end goal is to attach a SQLite database and build a *real*-ish backend using Elysia, because why not <(")
+> Also using Drizzle ORM because apparently the founder didn't want to learn SQL :shrug:
+
 # Chợ Việt
 
 🌐 **Tiếng Việt** · [English](README.en.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Deutsch](README.de.md)
