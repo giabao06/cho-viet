@@ -1,8 +1,8 @@
 > [!NOTE]
-> I'm doing this to poke fun. Technically I will not be allowed to sync upstream because I modified the source code by hand (see [CONTRIBUTING.md](CONTRIBUTING.md))
+> I'm doing this to poke fun. Technically I will not be allowed to sync upstream because I modified the source code by hand (see the upstream [CONTRIBUTING.md](https://github.com/harry-brogrammer/cho-viet/blob/main/CONTRIBUTING.md))
 > 
 > The end goal is to attach a SQLite database and build a *real*-ish backend using Elysia, because why not <(")
-> Also using Drizzle ORM because apparently the founder didn't want to learn SQL :shrug:
+> Also using Drizzle ORM because apparently the founder [didn't want to learn SQL](docs/prompts/02-database.md) :shrug:
 
 The following is the original readme from upstream.
 
