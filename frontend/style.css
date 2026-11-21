@@ -83,6 +83,7 @@
   .pill { white-space: nowrap; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 10px; align-self: center; }
   .pill.ok { background: #e6f7f4; color: #0d7a6b; }
   .pill.warn { background: #fff4e0; color: #9a6200; }
+  .pill.err { background: #fff4e0; color: #f85149; }
   .pill.na { background: #f0f0f0; color: #666; }
 
   footer { margin: 18px 0 10px; text-align: center; color: var(--muted); font-size: 12px; line-height: 1.7; }

@@ -12,6 +12,7 @@ const ZALO_READY = /^https:\/\/zalo\.me\//.test(CONFIG.ZALO_URL);
 
 let PRODUCTS = []
 let CATS = []
+let backend_online = true
 
 async function loadProducts() {
   const response = await fetch(`${CONFIG.BACKEND_URL}/api/products`)
@@ -70,6 +71,7 @@ function card(p) {
 }
 
 function render() {
+  renderStatus(); renderBadge(); renderMyOrders();
   $("cats").innerHTML = CATS.map(([k, e, n]) => `<button class="cat ${cat === k ? "on" : ""}" onclick="setCat('${k}')"><i>${e}</i>${n}</button>`).join("");
   $("flash").innerHTML = PRODUCTS.filter(p => p.pct >= 60 && !p.out).slice(0, 6).map(card).join("");
   const q = $("q").value.trim().toLowerCase();
@@ -78,7 +80,6 @@ function render() {
   $("listNote").textContent = q ? `Tìm thấy ${list.length} kết quả · Công nghệ: Ctrl+F` : "Đánh chỉ mục: Ctrl+F";
   $("all").innerHTML = list.length ? list.map(card).join("")
     : `<div class="empty" style="grid-column:1/-1">Không tìm thấy sản phẩm phù hợp.<br>Gợi ý: nhấn Ctrl+F.</div>`;
-  renderStatus(); renderBadge(); renderMyOrders();
 }
 function setCat(k) { cat = k; render(); }
 function doSearch(e) {
@@ -90,7 +91,7 @@ function founderAwake() { const h = new Date().getHours(); return h >= 7; }
 function renderStatus() {
   const awake = founderAwake();
   const rows = [
-    ["Cơ sở dữ liệu", "Google Sheets · DB_CHUAN_FINAL_v4 · công khai chỉ xem", CONFIG.ORDER_API ? "ok" : "warn", CONFIG.ORDER_API ? "Hoạt động" : "Chờ founder kết nối"],
+    ["Cơ sở dữ liệu", "Elysya Backend - SQLite", backend_online ? "ok" : "err", backend_online ? "Hoạt động" : "Offline!"],
     ["Bộ nhớ đệm", "Tab Chrome thứ 3 · yêu cầu duy trì mở 24/7", "ok", "Hoạt động"],
     ["Thanh toán", "Founder xác nhận thủ công qua Zalo", awake ? "ok" : "warn", awake ? "Hoạt động" : "Founder đang ngủ"],
     ["Giám sát", "Thân nhân founder · cảnh báo qua điện thoại", "ok", "Hoạt động"],
@@ -354,8 +355,13 @@ addEventListener("keydown", e => { if (e.key === "Escape") document.querySelecto
 $("zaloLink").href = CONFIG.ZALO_URL;
 
 async function init() {
-  await loadProducts();
-  await loadCats();
+  try {
+    await loadProducts();
+    await loadCats();
+  } catch (e) {
+    console.log("we have no error handling")
+    backend_online = false
+  }
   render();
 }
 
