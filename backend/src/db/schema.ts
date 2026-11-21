@@ -1,6 +1,5 @@
 import { int, sqliteTable, text, real } from 'drizzle-orm/sqlite-core'
 import { sql } from "drizzle-orm"
-import { boolean } from 'drizzle-orm/mysql-core/index';
 
 // Database schema based on the **PUBLIC!** DB_CHUAN_FINAL_V4.
 // also add some more stuff based on frontend/script.js
@@ -16,23 +15,23 @@ export const ordersTable = sqliteTable("orders", {
 
 export const productsTable = sqliteTable("products", {
   id: int().primaryKey({ autoIncrement: true }),
-  name: text(),
-  emoji: text(),
-  bg_color: text(),
-  category: int().references(() => categoriesTable.id),
-  price: int(),
-  old_price: int(),
-  sold: int(),
-  percentage: int(),
-  desc: text(),
-  sold_out: boolean()
+  name: text().notNull(),
+  emoji: text().notNull(),
+  bg_color: text().notNull(),
+  category: int().references(() => categoriesTable.id).notNull(),
+  price: int().notNull(),
+  old_price: int().notNull(),
+  sold: int().notNull(),
+  percentage: int().notNull(),
+  desc: text().notNull(),
+  sold_out: int({mode: 'boolean'}).default(sql`FALSE`).notNull()
 })
 
 export const categoriesTable = sqliteTable("categories", {
   id: int().primaryKey({ autoIncrement: true }),
-  name: text(),
-  alias: text(),
-  emoji: text()
+  name: text().notNull(),
+  alias: text().notNull(),
+  emoji: text().notNull()
 })
 
 export const vouchersTable = sqliteTable("vouchers", {
