@@ -1,8 +1,7 @@
-<style>
-  :root {
+:root {
     --brand: #ee4d2d; --brand2: #ff7337; --ink: #222; --muted: #757575; --line: #ececec;
     --bg: #f5f5f5; --card: #fff; --ok: #26aa99; --warn: #f5a623; --bad: #d0011b;
-  }
+}
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { -webkit-text-size-adjust: 100%; }
   body { background: var(--bg); color: var(--ink); font-family: -apple-system, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 14px; line-height: 1.4; padding-bottom: 76px; }
