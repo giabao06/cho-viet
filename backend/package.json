@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts"
+  },
+  "dependencies": {
+    "@elysia/static": "^1.4.12",
+    "@libsql/client": "^0.18.0",
+    "dotenv": "^18.0.10",
+    "drizzle-orm": "^1.0.0-rc.6",
+    "elysia": "latest"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "drizzle-kit": "^1.0.0-rc.6",
+    "tsx": "^4.23.15"
+  },
+  "module": "src/index.js"
+}
