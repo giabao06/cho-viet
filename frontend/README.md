@@ -1,8 +1,8 @@
 # Cho Viet frontend
 
-kept untouched from upstream, just splitting the script and CSS into separate files.
+kept mostly untouched from upstream, just splitting the script and CSS into separate files.
 
-giữ nguyên từ upstream nhưng tách CSS và JS ra file riêng
+(gần như) giữ nguyên từ upstream nhưng tách CSS và JS ra file riêng
 
 ## how to run
 
